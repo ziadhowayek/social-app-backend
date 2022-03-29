@@ -13,20 +13,22 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private byte[] profilePicture;
     private Set<PostRef> post = new HashSet<>();
     private Set<FollowingRef> following = new HashSet<>();
     public User(){
 
     }
 
-    public User(Long id, String username, String email, String password) {
+    public User(Long id, String username, String email, String password,byte[] data) {
         Id = id;
+        this.profilePicture = data;
         this.username = username;
         this.email = email;
         this.password = password;
     }
-    static User create(String username,String email,String password){
-        return new User(null,username,email,password);
+    static User create(String username,String email,String password,byte[] data){
+        return new User(null,username,email,password,data);
     }
 
     public Long getId() {
@@ -70,6 +72,14 @@ public class User {
     }
     public void addPost(Post post){
         this.post.add(new PostRef(post.getId()));
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public Set<FollowingRef> getFollowing() {

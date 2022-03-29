@@ -6,9 +6,13 @@ import com.socialmedia.backend.model.User;
 import com.socialmedia.backend.repository.PostRepository;
 import com.socialmedia.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -62,5 +66,16 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id).get();
+    }
+
+    public String getExtension(String contentType) {
+        int lastCharBeforeExtension = contentType.lastIndexOf('/');
+        return contentType.substring(lastCharBeforeExtension+1);
+    }
+
+    public String addProfilePicture(long userId, MultipartFile image) throws IOException {
+        File post = new File("C:/Users/ziadh/Desktop/ziad/project/pictures/"+userId+"."+this.getExtension(image.getContentType()));
+        image.transferTo(post);
+        return HttpHeaders.ACCEPT;
     }
 }

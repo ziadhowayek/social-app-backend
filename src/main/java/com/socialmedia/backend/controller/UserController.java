@@ -1,17 +1,16 @@
 package com.socialmedia.backend.controller;
 
-import com.socialmedia.backend.model.Post;
-import com.socialmedia.backend.model.PostRef;
 import com.socialmedia.backend.model.User;
-import com.socialmedia.backend.repository.PostRepository;
-import com.socialmedia.backend.repository.UserRepository;
 import com.socialmedia.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -57,6 +56,9 @@ public class UserController {
         return userService.follow(userId,followingId);
     }
 
-
+    @PostMapping("{userId}/addProfilePicture/")
+    String addProfilePicture(@PathVariable long userId,@RequestParam("image") MultipartFile image) throws IOException {
+        return userService.addProfilePicture(userId,image);
+    }
 
 }

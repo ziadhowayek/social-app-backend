@@ -10,19 +10,19 @@ import java.util.Set;
 public class Post {
     @Id
     private Long id;
-    private String link;
+    private byte[] data;
     private Integer likes;
     private Set<LikesRef> likers = new HashSet<>();
     public Post() {
     }
 
-    public Post(Long id, String link, int likes) {
+    public Post(Long id, byte[] data, int likes) {
         this.id = id;
-        this.link = link;
+        this.data = data;
         this.likes = likes;
     }
-    static Post create(String Link,Integer likes){
-        return new Post(null,Link,likes);
+    static Post create(byte[] data,Integer likes){
+        return new Post(null,data,likes);
     }
 
     public Long getId() {
@@ -33,12 +33,12 @@ public class Post {
         this.id = id;
     }
 
-    public String getLink() {
-        return link;
+    public byte[] getData() {
+        return data;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
     public int getLikes() {
