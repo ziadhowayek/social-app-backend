@@ -7,6 +7,8 @@ import com.socialmedia.backend.repository.PostRepository;
 import com.socialmedia.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,8 @@ public class UserService {
 
     @Autowired
     PostRepository postRepository;
+
+    String imagesPath = "C:/Users/ziadh/Desktop/ziad/project/pictures/";
 
     public List<User> getUser() {
         return (List<User>) userRepository.findAll();
@@ -59,9 +63,9 @@ public class UserService {
         return user.getPassword().equals(password);
     }
 
-    public Long getIdByUsername(String username) {
+    public User getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
-        return user.getId();
+        return user;
     }
 
     public User getUserById(Long id) {
@@ -73,9 +77,18 @@ public class UserService {
         return contentType.substring(lastCharBeforeExtension+1);
     }
 
-    public String addProfilePicture(long userId, MultipartFile image) throws IOException {
-        File post = new File("C:/Users/ziadh/Desktop/ziad/project/pictures/"+userId+"."+this.getExtension(image.getContentType()));
-        image.transferTo(post);
+    public String addProfilePicture(Long userId, MultipartFile image) throws IOException {
+        File profilePic = new File(this.imagesPath+userId+"."+this.getExtension(image.getContentType()));
+        image.transferTo(profilePic);
+        this.addProfilePictureExtension(userId,this.getExtension(image.getContentType()));
         return HttpHeaders.ACCEPT;
     }
+
+    private void addProfilePictureExtension(Long userId, String extension) {
+        User user = userRepository.findById(userId).get();
+        user.setProfilePictureExtension(extension);
+        userRepository.save(user);
+    }
+
+
 }
